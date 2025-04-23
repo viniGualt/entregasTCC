@@ -1,18 +1,18 @@
 from time import sleep
 
-def limpar():
+def limpar() -> None:
     import os
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def leiaInt(msm):
+def leiaInt(msm) -> None:
     while True:
         try:
             n = int(input(msm)) 
         except (ValueError, TypeError):
-            print("[ERRO: por favor, digite um número inteiro válido.]")
+            print("Por favor, digite um número inteiro válido.")
             continue
         except (KeyboardInterrupt):
-            print("[Usuário preferiu não digitar esse número.]")
+            print("Usuário preferiu não digitar esse número.")
             return 0
         else:
             return n
@@ -43,3 +43,24 @@ def voltarmenu(menu):
             return menu
         else:
             print("Digite uma opção válida") 
+            
+orientadores = {}
+
+def cadastrarOrientador() -> None:
+    while True:
+        limpar()
+        nome = input("Digite o nome do orientador que deseja cadastrar: ")
+        if nome not in orientadores:
+            orientadores[nome] = []
+            print(f"Orientador {nome} cadastrado com sucesso!")
+            sleep(1)
+        else:
+            print(f"Orientador já cadastrado.")
+            sleep(1)
+        
+        sair = input("Deseja sair? (Caso sim, digite 'q'): ")
+        if sair.lower() == "q":
+            break
+        
+cadastrarOrientador()
+print(orientadores)
