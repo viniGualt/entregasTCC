@@ -64,3 +64,31 @@ def cadastrarOrientador() -> None:
         
 cadastrarOrientador()
 print(orientadores)
+
+def validaOrientador() -> str:
+    while True:  
+      orientador = input("Digite o nome do orinteador: ")
+      if orientador not in orientadores:
+          print("Digite um orientador válido")
+      else:
+          return orientador    
+
+def registrarEntrega() -> tuple:
+    apresentacao = input("Digite a numeração aprese")
+
+alunos = {}
+
+def cadastrarAluno() -> None:
+    while True:
+        limpar()
+        nome = str(input("Digite o nome do aluno que deseja cadastrar: "))
+        matricula = str(input("Digite a matrícula do aluno: "))
+        orientador = validaOrientador()
+        entregas = []
+        alunos[matricula] = {
+            "nome": nome,
+            "matricula": matricula,
+            "orientador": orientador,
+            "entregas": entregas
+        }
+
