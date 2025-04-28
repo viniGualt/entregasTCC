@@ -44,6 +44,7 @@ def voltarMenu():
             print("Digite uma opção válida") 
             
 orientadores = {}
+alunos = []
 
 def cadastrarOrientador() -> None:
     while True:
@@ -60,22 +61,14 @@ def cadastrarOrientador() -> None:
         sair = input("Deseja sair? (Caso sim, digite 'q'): ")
         if sair.lower() == "q":
             break
-        
-cadastrarOrientador()
-print(orientadores)
 
 def validaOrientador() -> str:
     while True:  
-      orientador = input("Digite o nome do orinteador: ")
-      if orientador not in orientadores:
-          print("Digite um orientador válido")
-      else:
-          return orientador    
-
-def registrarEntrega() -> tuple:
-    apresentacao = input("Digite a numeração aprese")
-
-alunos = []
+        orientador = input("Digite o nome do orientador: ")
+        if orientador not in orientadores:
+            print("Digite um orientador válido")
+        else:
+            return orientador    
 
 def cadastrarAluno() -> None:
     while True:
@@ -91,7 +84,8 @@ def cadastrarAluno() -> None:
             "entregas": entregas
         }
         alunos.append(aluno)
-        orientador[orientadores].append(aluno)
+        orientadores[orientador].append(nome)
+        print(f"Aluno {nome} cadastrado com sucesso!")
         sleep(1)
         sair = input("Deseja cadastrar outro aluno? (Digite 'q' para sair): ").strip().lower()
         if sair == 'q':
@@ -123,3 +117,38 @@ def registrarEntrega():
         print("Entrega registrada com sucesso!")
     else:
         print("Aluno não encontrado.")
+
+def listar_alunos_por_orientador():
+    limpar()
+    for orientador, alunos_orientados in orientadores.items():
+        print(f"Orientador: {orientador}")
+        print("Alunos:")
+        for aluno in alunos_orientados:
+            print(f" - {aluno}")
+        print(linha())
+    input("Pressione qualquer tecla para voltar ao menu...")
+
+def listar_entregas_por_aluno():
+    limpar()
+    matricula = input("Digite a matrícula do aluno: ")
+    aluno = buscar_aluno_por_matricula(matricula)
+    if aluno:
+        print(f"Entregas do aluno {aluno['nome']}:")
+        for entrega in aluno["entregas"]:
+            print(f"Versão: {entrega[0]}, Data: {entrega[1]}, Nota: {entrega[2]}")
+    else:
+        print("Aluno não encontrado.")
+    input("Pressione qualquer tecla para voltar ao menu...")
+
+def listar_pendencias_avaliacao():
+    limpar()
+    for orientador, alunos_orientados in orientadores.items():
+        print(f"Orientador: {orientador}")
+        for aluno_nome in alunos_orientados:
+            aluno = next((a for a in alunos if a["nome"] == aluno_nome), None)
+            if aluno:
+                pendencias = [entrega for entrega in aluno["entregas"] if entrega[2] is None]
+                if pendencias:
+                    print(f" - Aluno: {aluno['nome']} possui {len(pendencias)} entrega(s) pendente(s).")
+        print(linha())
+    input("Pressione qualquer tecla para voltar ao menu...")
