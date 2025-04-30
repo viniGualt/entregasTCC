@@ -24,4 +24,4 @@ O sistema permite o cadastro de orientadores e alunos, o registro de versões do
 - A média geral considera apenas a última versão avaliada de cada aluno.
 - A nota de uma entrega é opcional e pode ser atribuída posteriormente.
 
-<p align="center"> Desenvolvido por Thierry, Vinicius e Artur para um projeto da Unimar
+<p align="center"> Desenvolvido por Thierry - RA: 1999010, Vinicius - RA: 2002601 e Artur - RA: 2009597 para um projeto da Unimar
