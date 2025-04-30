@@ -152,3 +152,4 @@ def listar_pendencias_avaliacao():
                     print(f" - Aluno: {aluno['nome']} possui {len(pendencias)} entrega(s) pendente(s).")
         print(linha())
     input("Pressione qualquer tecla para voltar ao menu...")
+    
