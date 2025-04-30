@@ -46,10 +46,10 @@ def cadastrar_orientador() -> None:
             orientadores[nome] = []
             print(f"Orientador {nome} cadastrado com sucesso!")
             sleep(1)
+            break
         else:
             print(f"Orientador já cadastrado.")
             sleep(1)
-        
         sair = input("Deseja sair? (Caso sim, digite 'q'): ").lower()
         if sair.lower() == "q":
             break
@@ -65,15 +65,12 @@ def valida_orientador() -> str:
                     print("Indo cadastrar um orientador")
                     sleep(1)
                     cadastrar_orientador()
-                    break
+                    return orientador
                 elif resposta1 == '2':
                     print("Digite o nome novamente")
                     sleep(1)
-                    valida_orientador()
-                    break
                 else:
                     print("Opção inválida. Digite '1' para cadastrar um novo orientador ou '2' para corrigir o nome.")
-                    
         else:
             return orientador    
 
@@ -133,8 +130,7 @@ def registrar_entrega():
         print("Entrega registrada com sucesso!")
     else:
         print("Aluno não encontrado.")
-        sleep(1)
-        operacoes()
+    operacoes()
 
 def registrar_nota():
     matricula = input("Digite a matrícula do aluno: ")
@@ -144,8 +140,7 @@ def registrar_nota():
         pendentes = [entrega for entrega in aluno['entregas'] if entrega[2] is None]
         if not pendentes:
             print("Não há entregas para esse aluno")
-            sleep(1)
-            return
+            
         nota = float(input("Digite a nota para a entrega pendente do aluno: "))
         for i in range(len(aluno['entregas'])):
             if aluno['entregas'][i][2] is None:
@@ -153,6 +148,7 @@ def registrar_nota():
                 aluno['entregas'][i] = (numero, data_entrega, nota)
                 print("Nota registrada com sucesso")
                 break
+    operacoes()
 
 def listar_alunos_por_orientador():
     limpar()
@@ -162,6 +158,7 @@ def listar_alunos_por_orientador():
         for aluno in alunos_orientados:
             print(f" - {aluno}")
         print(linha())
+    operacoes()
 
 def listar_entregas_por_aluno():
     limpar()
@@ -173,8 +170,7 @@ def listar_entregas_por_aluno():
             print(f"Versão: {entrega[0]}, Data: {entrega[1]}, Nota: {entrega[2]}")
     else:
         print("Aluno não encontrado.")
-        sleep(1)
-        operacoes()
+    operacoes()
 
 def listar_pendencias_avaliacao():
     limpar()
@@ -186,7 +182,7 @@ def listar_pendencias_avaliacao():
                 pendencias = [entrega for entrega in aluno["entregas"] if entrega[2] is None]
                 if pendencias:
                     print(f" - Aluno: {aluno['nome']} possui {len(pendencias)} entrega(s) pendente(s).")
-        print(linha())
+    operacoes()
 
 def media_por_aluno():
     matricula = input("Digite a matrícula do aluno: ")
@@ -194,14 +190,23 @@ def media_por_aluno():
     
     if aluno:
         entregas_com_nota = [entrega for entrega in aluno["entregas"] if entrega[2] is not None]
-        
+
         if entregas_com_nota:
+            qtd_entregas = len(entregas_com_nota)
             media = sum(entrega[2] for entrega in entregas_com_nota) / len(entregas_com_nota)
             print(f"A média do aluno {aluno['nome']} é: {media:.2f}")
+
+            if qtd_entregas == 1:
+                print(f"A média do aluno {aluno['nome']} é: {media:.2f} (apenas 1 entrega avaliada)")
+            elif qtd_entregas == 2:
+                print(f"A média do aluno {aluno['nome']} é: {media:.2f} (apenas 2 entrega avaliada)")
+            else:
+                print(f"A média do aluno {aluno['nome']} é: {media:.2f} (com todas as entregas avaliadas)")
         else:
             print(f"O aluno {aluno['nome']} ainda não tem nenhuma entregas avaliadas por seu orientador.")
     else:
         print("Aluno não encontrado.")
+    operacoes()
 
 def media_geral_por_orientador():
     for orientador, alunos_orientados in orientadores.items():
@@ -214,15 +219,17 @@ def media_geral_por_orientador():
                 if entregas_com_nota:
                     media = sum(entrega[2] for entrega in entregas_com_nota) / len(entregas_com_nota)
                     notas.append(media)
-
+        
         if notas:
             media_geral = sum(notas) / len(notas)
             print(f"A média geral dos alunos orientados por {orientador} é: {media_geral:.2f}")
         else:
             print(f"Não há entregas avaliadas para os alunos orientados por {orientador}.")
-
+        
+    operacoes()
 
 def operacoes():
+    sleep(1)
     limpar()
     print("1. Registrar nova entrega.")
     print("2. Registrar nota.")
@@ -232,29 +239,44 @@ def operacoes():
     print("6. Listar média por aluno.")
     print("7. Listar média geral por orientador.")
     print("q. Sair.")
-    resposta2 = input("\nInsira o número para a operação que deseja ou 'q' para ir para o menu: ").lower()
+    
     while True:
+        resposta2 = input("\nInsira o número para a operação que deseja ou 'q' para ir para o menu: ").lower()
         if resposta2 == "1":
-            limpar()    
+            limpar()
             registrar_entrega()
+            sleep(1)
+            break
         elif resposta2 == "2":
             limpar()
             registrar_nota()
+            sleep(1)
+            break
         elif resposta2 == "3":
             limpar()
             listar_alunos_por_orientador()
+            sleep(1)
+            break
         elif resposta2 == "4":
             limpar()
             listar_entregas_por_aluno()
+            sleep(1)
+            break
         elif resposta2 == "5":
             limpar()
             listar_pendencias_avaliacao()
+            sleep(1)
+            break
         elif resposta2 == "6":
             limpar()
             media_por_aluno()
+            sleep(1)
+            break
         elif resposta2 == "7":
             limpar()
             media_geral_por_orientador()
+            sleep(1)
+            break
         elif resposta2 == "q":
             limpar()
             print("Voltando ao menu...")
@@ -262,22 +284,27 @@ def operacoes():
             break
         else:
             print("Opção inválida.")
+            sleep(1)
 
-while True:
-    limpar()
-    resposta3 = menu(["Cadastrar aluno", "Cadastrar orientador", "Demais operações"])
-    if resposta3 == 1:
+def menu_principal():
+    while True:
         limpar()
-        cadastrar_aluno()
-    elif resposta3 == 2:
-        limpar()
-        cadastrar_orientador()
-    elif resposta3 == 3:
-        limpar()
-        operacoes()
-    elif resposta3 == "q":
-        print("Saindo do programa...")
-        sleep(1)
-        break
-    else:
-        print("Opção inválida.")
+        resposta3 = menu(["Cadastrar aluno", "Cadastrar orientador", "Demais operações"])
+
+        if resposta3 == 1:
+            limpar()
+            cadastrar_aluno()
+            sleep(1)
+        elif resposta3 == 2:
+            limpar()
+            cadastrar_orientador()
+            sleep(1)
+        elif resposta3 == 3:
+            limpar()
+            operacoes()
+            sleep(1)
+        else:
+            print("Opção inválida.")
+            sleep(1)
+
+menu_principal()
